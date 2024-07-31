@@ -1,7 +1,6 @@
 package mySql
 
 import (
-    "fmt"
 	"log"
 
 	"database/sql"
@@ -9,9 +8,6 @@ import (
 )
 
 func List() {
-
-    fmt.Println("# |\t\ttask\t\t|\tdone\t")
-
     // Open mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
     if err != nil {
@@ -45,7 +41,6 @@ func List() {
         if err != nil {
             log.Fatal(err)
         }
-        fmt.Printf("%d |%s\t\t|%v\n", id, task, done)
     }
     err = rows.Err()
     if err != nil {

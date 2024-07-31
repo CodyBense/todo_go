@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"database/sql"
 
+	"github.com/CodyBense/todo/cmd/mySql"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -40,6 +42,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             }
         case "q", "ctrl+c":
             return m, tea.Quit
+        case "d":
+            intId, err := strconv.Atoi(m.table.SelectedRow()[0])
+            if err != nil {
+                panic(err)
+            }
+            return m, func() tea.Msg {mySql.Remove(&intId)
+            mySql.List()
+            m.table.Update(msg)
+            return msg}
         case "enter":
             return m, tea.Batch(
                 tea.Printf("task is %s", m.table.SelectedRow()[1]),

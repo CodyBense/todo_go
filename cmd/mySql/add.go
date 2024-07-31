@@ -34,13 +34,14 @@ func Add(s *string) {
     for rows.Next() {
         err := rows.Scan(&lastId)
         if err != nil {
-            log.Fatal(err)
+            // log.Fatal(err)
         }
     }
     err = rows.Err()
     if err != nil {
         log.Fatal(err)
     }
+
 
     nextId = lastId + 1
 
