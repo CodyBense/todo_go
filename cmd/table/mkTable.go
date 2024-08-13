@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
+	// "strconv"
 
 	"database/sql"
 
-	"github.com/CodyBense/todo/cmd/mySql"
+	"github.com/CodyBense/todo/cmd/mySql/bubletea_quries"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -42,15 +42,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             }
         case "q", "ctrl+c":
             return m, tea.Quit
-        case "d":
-            intId, err := strconv.Atoi(m.table.SelectedRow()[0])
-            if err != nil {
-                panic(err)
-            }
-            return m, func() tea.Msg {mySql.Remove(&intId)
-            mySql.List()
-            m.table.Update(msg)
-            return msg}
+        // case "d":
+        //     intId, err := strconv.Atoi(m.table.SelectedRow()[0])
+        //     if err != nil {
+        //         panic(err)
+        //     }
+        //     return m, func() tea.Msg {mySql.Remove(&intId)
+        //     mySql.List()
+        //     m.table.Update(msg)
+        //     return msg}
         case "enter":
             return m, tea.Batch(
                 tea.Printf("task is %s", m.table.SelectedRow()[1]),
@@ -73,10 +73,6 @@ func Main() {
         {Title: "Done", Width: 5},
     }
 
-    // rows := []table.Row{
-    //     {"1", "complete v3 of todo list", "false"},
-    // }
-
     rowsBt := []table.Row{}
 
     // Open mysql connection
@@ -94,31 +90,17 @@ func Main() {
     
     // sql.Connect()
 
+    // Fills table
+
     var (
         id int
         task string
         done bool
     )
 
-    // Conduct query
-    rowsSql, err := db.Query("SELECT * FROM list")
-    if err != nil {
-        log.Fatalf("not able to conduct query: %s", err)
-    }
-    defer rowsSql.Close()
+    id, task, done = bubletea_queries.List()
 
-    for rowsSql.Next() {
-        err := rowsSql.Scan(&id, &task, &done)
-        if err != nil {
-            log.Fatal(err)
-        }
-        // Maybe append to rowsBt here
-        rowsBt = append(rowsBt, table.Row{fmt.Sprintf("%d", id), task, fmt.Sprintf("%v", done)})
-    }
-    err = rowsSql.Err()
-    if err != nil {
-        log.Fatal(err)
-    }
+    rowsBt = append(rowsBt, table.Row{fmt.Sprintf("%d", id), task, fmt.Sprintf("%v", done)})
 
     t := table.New(
         table.WithColumns(columnsBt),
