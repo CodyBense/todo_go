@@ -1,6 +1,7 @@
 package bubletea_queries
 
 import (
+    "fmt"
 	"log"
 
 	"database/sql"
@@ -8,7 +9,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func List() (int, string, bool) {
+// func List() (int, string, bool) {
+func List() []map[string]string {
     // Open mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
     if err != nil {
@@ -30,6 +32,8 @@ func List() (int, string, bool) {
         done bool
     )
 
+    var results []map[string]string
+
     // Conduct query
     rows, err := db.Query("SELECT * FROM list")
     if err != nil {
@@ -42,11 +46,12 @@ func List() (int, string, bool) {
         if err != nil {
             log.Fatal(err)
         }
+        results = append(results, map[string]string{"id": fmt.Sprintf("%d", id), "task": task, "done": fmt.Sprintf("%v", done)})
     }
     err = rows.Err()
     if err != nil {
         log.Fatal(err)
     }
 
-    return id, task, done
+    return results
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	// "strconv"
 
 	"database/sql"
@@ -92,15 +93,11 @@ func Main() {
 
     // Fills table
 
-    var (
-        id int
-        task string
-        done bool
-    )
-
-    id, task, done = bubletea_queries.List()
-
-    rowsBt = append(rowsBt, table.Row{fmt.Sprintf("%d", id), task, fmt.Sprintf("%v", done)})
+    results := bubletea_queries.List()
+    for _, r := range results {
+        fmt.Println(r)
+        rowsBt = append(rowsBt, table.Row{r["id"], r["task"], r["done"]})
+    }
 
     t := table.New(
         table.WithColumns(columnsBt),
