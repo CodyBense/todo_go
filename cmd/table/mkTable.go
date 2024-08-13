@@ -8,7 +8,7 @@ import (
 
 	"database/sql"
 
-	"github.com/CodyBense/todo/cmd/mySql/bubletea_quries"
+	"github.com/CodyBense/todo/cmd/mySql/bubletea_queries"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
