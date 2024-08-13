@@ -95,7 +95,6 @@ func Main() {
 
     results := bubletea_queries.List()
     for _, r := range results {
-        fmt.Println(r)
         rowsBt = append(rowsBt, table.Row{r["id"], r["task"], r["done"]})
     }
 
