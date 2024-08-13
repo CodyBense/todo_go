@@ -43,7 +43,7 @@ func List() {
         if err != nil {
             log.Fatal(err)
         }
-        fmt.Printf("%d |%s\t\t|%v\n", id, task, done)
+        fmt.Printf("%d | %s\t\t| %v\n", id, task, done)
     }
     err = rows.Err()
     if err != nil {
