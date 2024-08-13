@@ -23,6 +23,6 @@ func add(cmd *cobra.Command, args []string) {
 
     // Handles task flag parsing
     taskFlag, _ := cmd.Flags().GetString("taskFlag")
-
+    
     mySql.Add(&taskFlag)
 }

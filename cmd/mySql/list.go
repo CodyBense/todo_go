@@ -1,9 +1,11 @@
 package mySql
 
 import (
+	"fmt"
 	"log"
 
 	"database/sql"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -41,6 +43,7 @@ func List() {
         if err != nil {
             log.Fatal(err)
         }
+        fmt.Printf("%d |%s\t\t|%v\n", id, task, done)
     }
     err = rows.Err()
     if err != nil {
