@@ -10,7 +10,16 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-var docStyle = lipgloss.NewStyle().Margin(1, 2)
+var (
+    appStyle = lipgloss.NewStyle().Margin(1, 2)
+
+    titleStyle = lipgloss.NewStyle().
+        Foreground(lipgloss.Color("#FFFDF5")).
+        Background(lipgloss.Color("#25A065")).
+        Padding(0, 1)
+    
+    notDoneStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#CC0000"))
+)
 
 type item struct {
 	title, desc, done string
@@ -35,7 +44,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 	case tea.WindowSizeMsg:
-		h, v := docStyle.GetFrameSize()
+		h, v := appStyle.GetFrameSize()
 		m.list.SetSize(msg.Width-h, msg.Height-v)
 	}
 
@@ -45,7 +54,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	return docStyle.Render(m.list.View())
+	return appStyle.Render(m.list.View())
 }
 
 func Main() {
@@ -58,6 +67,7 @@ func Main() {
 
 	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
 	m.list.Title = "TODO"
+    m.list.Styles.Title = titleStyle
 
 	p := tea.NewProgram(m, tea.WithAltScreen())
 
