@@ -1,4 +1,4 @@
-package bubletea_queries
+package bubbletea_queries
 
 import (
     "fmt"

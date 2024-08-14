@@ -6,7 +6,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/CodyBense/todo/cmd/table"
+	// "github.com/CodyBense/todo/cmd/table"
+    "github.com/CodyBense/todo/cmd/list"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +24,8 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
     // insert call to bubbletea table func
-	Run: func(cmd *cobra.Command, args []string) { table.Main() },
+	// Run: func(cmd *cobra.Command, args []string) { table.Main() },
+	Run: func(cmd *cobra.Command, args []string) { list.Main() },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

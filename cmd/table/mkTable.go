@@ -9,7 +9,7 @@ import (
 
 	"database/sql"
 
-	"github.com/CodyBense/todo/cmd/mySql/bubletea_queries"
+	"github.com/CodyBense/todo/cmd/mySql/bubbletea_queries"
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -93,7 +93,7 @@ func Main() {
 
     // Fills table
 
-    results := bubletea_queries.List()
+    results := bubbletea_queries.List()
     for _, r := range results {
         rowsBt = append(rowsBt, table.Row{r["id"], r["task"], r["done"]})
     }

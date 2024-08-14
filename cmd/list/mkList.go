@@ -1,12 +1,12 @@
 package list
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 
-    "github.com/charmbracelet/bubbles/list"
-    tea "github.com/charmbracelet/bubbletea"
-    "github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/bubbles/list"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
@@ -47,7 +47,7 @@ func (m model) View() string {
 	return docStyle.Render(m.list.View())
 }
 
-func main() {
+func Main() {
 	items := []list.Item{
 		item{title: "Raspberry Pi’s", desc: "I have ’em all over my house"},
 		item{title: "Nutella", desc: "It's good on toast"},
@@ -75,7 +75,7 @@ func main() {
 	}
 
 	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
-	m.list.Title = "My Fave Things"
+	m.list.Title = "TODO"
 
 	p := tea.NewProgram(m, tea.WithAltScreen())
 
