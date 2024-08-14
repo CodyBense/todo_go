@@ -13,12 +13,12 @@ import (
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
 type item struct {
-	title, desc string
+	title, desc, done string
 }
 
 func (i item) Title() string       { return i.title }
 func (i item) Description() string { return i.desc }
-func (i item) FilterValue() string { return i.title }
+func (i item) FilterValue() string { return i.done }
 
 type model struct {
 	list list.Model
@@ -53,7 +53,7 @@ func Main() {
     items := []list.Item{}
 
     for _, r := range results {
-        items = append(items, item{title: r["task"], desc: r["done"]})
+        items = append(items, item{title: r["task"], desc: r["id"], done: r["done"]})
     }
 
 	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
