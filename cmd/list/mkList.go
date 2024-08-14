@@ -18,7 +18,8 @@ var (
         Background(lipgloss.Color("#25A065")).
         Padding(0, 1)
     
-    notDoneStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#CC0000"))
+    notDoneStyle = lipgloss.Color("#CC0000")
+    doneStyle = lipgloss.Color("#29FF03")
 )
 
 type item struct {
@@ -64,8 +65,11 @@ func Main() {
     for _, r := range results {
         items = append(items, item{title: r["task"], desc: r["id"], done: r["done"]})
     }
+    
+    delegate := list.NewDefaultDelegate()
+    delegate.Styles.SelectedTitle = delegate.Styles.SelectedTitle.Foreground(notDoneStyle)
 
-	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
+	m := model{list: list.New(items, delegate, 0, 0)}
 	m.list.Title = "TODO"
     m.list.Styles.Title = titleStyle
 
