@@ -47,6 +47,7 @@ func List() []map[string]string {
             log.Fatal(err)
         }
         results = append(results, map[string]string{"id": fmt.Sprintf("%d", id), "task": task, "done": fmt.Sprintf("%v", done)})
+        // results = append(results, map[string]string{ "task": task, "done": fmt.Sprintf("%v", done)})
     }
     err = rows.Err()
     if err != nil {
