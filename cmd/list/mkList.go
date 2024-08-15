@@ -1,9 +1,9 @@
 /*
 TODO:
 
-    add update, add, and delete functionality
-	figure out how to change item color based on done status
-	styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
+	    add update, add, and delete functionality
+		figure out how to change item color based on done status
+		styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
 */
 package list
 
@@ -11,11 +11,91 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/textarea"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
+// From Model
+
+type Form struct {
+    help help.Model
+    title textinput.Model
+    description textarea.Model
+}
+
+func newDefaultForm() *Form {
+
+    return NewForm("task name", "")
+
+}
+
+func NewForm(title, description string) *Form {
+
+    form := Form{
+        help: help.New(),
+        title: textinput.New(),
+        description: textarea.New(),
+    }
+
+    form.title.Placeholder = title
+    form.description.Placeholder = description
+    form.title.Focus()
+
+    return &form
+}
+
+func (f Form) CreateTask() item {
+
+    return item{f.title.Value(), f.description.Value(), "false", "ud"}
+
+}
+
+func (f Form) Init() tea.Cmd {
+    
+    return nil
+
+}
+
+func (f Form) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+
+    var cmd tea.Cmd
+
+    switch msg := msg.(type) {
+    case tea.KeyMsg:
+        switch msg.String() {
+        case "ctrl+c", "q":
+            return f, tea.Quit
+        case "enter":
+            if f.title.Focused() {
+                f.title.Blur()
+                f.description.Focus()
+                return f, textarea.Blink
+            }
+            return model.Update(f)
+        }
+    }
+
+    if f.title.Focused() {
+        f.title, cmd = f.title.Update(msg)
+        return f, cmd
+    }
+    f.description, cmd = f.description.Update(msg)
+    return f, cmd
+}
+
+func (f Form) View() string {
+    return lipgloss.JoinVertical(
+            lipgloss.Left,
+            "Create a new task",
+            f.title.View(),
+            f.description.View())
+}
+
+// List Model
 // Styling variables
 var (
     appStyle = lipgloss.NewStyle().Margin(1, 2)
