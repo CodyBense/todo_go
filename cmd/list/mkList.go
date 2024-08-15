@@ -1,8 +1,9 @@
 /*
 TODO:
 
+    add update, add, and delete functionality
+        fix update to refresh after
 	figure out how to change item color based on done status
-	add update, add, and delete functionality
 	styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
 */
 package list
@@ -59,8 +60,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
         if msg.String() == "u" {
             m.updateItem()
-            // currentItems := m.list.Items()
-            // fmt.Println(currentItems[0])
             return m, nil
         }
         if msg.String() == "d" {
