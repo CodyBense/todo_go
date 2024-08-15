@@ -1,14 +1,16 @@
 /*
-    TODO:
-        figure out how to change item color based on done status
-        add update, add, and delete functionality
-        styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
+TODO:
+
+	figure out how to change item color based on done status
+	add update, add, and delete functionality
+	styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
 */
 package list
 
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/CodyBense/todo/cmd/mySql/bubbletea_queries"
 	"github.com/charmbracelet/bubbles/list"
@@ -56,12 +58,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
         if msg.String() == "u" {
-            currentItems := m.list.Items()
-            fmt.Println(currentItems[0])
+            m.updateItem()
+            // currentItems := m.list.Items()
+            // fmt.Println(currentItems[0])
             return m, nil
         }
         if msg.String() == "d" {
-            return m, tea.Quit
+            return m, nil
         }
 	case tea.WindowSizeMsg:
 		h, v := appStyle.GetFrameSize()
@@ -101,15 +104,30 @@ func Main() {
 // Helper funcs
 
 func resultsToList() []list.Item {
+
     results := bubbletea_queries.List()
     ItemsList := []list.Item{}
 
     for _, r := range results {
-        ItemsList = append(ItemsList, item{title: r["task"], desc: r["done"], done: r["done"]})
+        ItemsList = append(ItemsList, item{title: r["task"], desc: r["done"], done: r["done"], id: r["id"]})
     }
 
     return ItemsList
 }
 
-func (m model) marshallData() {
+func (m model) updateItem() {
+
+    var currentIndex int
+
+    items := bubbletea_queries.List()
+    currentIndex = m.list.Index()
+    currentId := items[currentIndex]["id"]
+    i, err := strconv.Atoi(currentId)
+    if err != nil {
+        fmt.Println("Error converting string to int:", err)
+        return
+    }
+    // fmt.Println(items[currentIndex]["id"])
+    bubbletea_queries.Update(i)
+
 }

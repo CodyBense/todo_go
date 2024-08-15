@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func Update(idFlag *int) {
+func Update(idFlag int) {
 
     // Open Mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
