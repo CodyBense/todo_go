@@ -1,7 +1,7 @@
 package bubbletea_queries
 
 import (
-    "fmt"
+	"fmt"
 	"log"
 
 	"database/sql"
@@ -46,8 +46,9 @@ func List() []map[string]string {
         if err != nil {
             log.Fatal(err)
         }
+
         results = append(results, map[string]string{"id": fmt.Sprintf("%d", id), "task": task, "done": fmt.Sprintf("%v", done)})
-        // results = append(results, map[string]string{ "task": task, "done": fmt.Sprintf("%v", done)})
+
     }
     err = rows.Err()
     if err != nil {

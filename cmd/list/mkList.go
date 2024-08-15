@@ -1,3 +1,9 @@
+/*
+    TODO:
+        figure out how to change item color based on done status
+        add update, add, and delete functionality
+        styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
+*/
 package list
 
 import (
@@ -10,6 +16,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// Styling variables
 var (
     appStyle = lipgloss.NewStyle().Margin(1, 2)
 
@@ -23,7 +30,7 @@ var (
 )
 
 type item struct {
-	title, desc, done string
+	title, desc, done, id string
 }
 
 func (i item) Title() string       { return i.title }
@@ -41,9 +48,21 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+        // switch msg.String() {
+        // case "ctrl+c":
+        //     return m, tea.Quit
+        // }
 		if msg.String() == "ctrl+c" {
 			return m, tea.Quit
 		}
+        if msg.String() == "u" {
+            currentItems := m.list.Items()
+            fmt.Println(currentItems[0])
+            return m, nil
+        }
+        if msg.String() == "d" {
+            return m, tea.Quit
+        }
 	case tea.WindowSizeMsg:
 		h, v := appStyle.GetFrameSize()
 		m.list.SetSize(msg.Width-h, msg.Height-v)
@@ -59,18 +78,14 @@ func (m model) View() string {
 }
 
 func Main() {
-    results := bubbletea_queries.List()
-    items := []list.Item{}
 
-    for _, r := range results {
-        items = append(items, item{title: r["task"], desc: r["done"], done: r["done"]})
-    }
+    ItemsList := resultsToList()
     
     delegate := list.NewDefaultDelegate()
     delegate.Styles.SelectedTitle = delegate.Styles.SelectedTitle.Foreground(doneStyle)
     delegate.Styles.SelectedDesc = delegate.Styles.SelectedTitle
 
-	m := model{list: list.New(items, delegate, 0, 0)}
+	m := model{list: list.New(ItemsList, delegate, 0, 0)}
 	m.list.Title = "TODO"
     m.list.Styles.Title = titleStyle
 
@@ -80,4 +95,21 @@ func Main() {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
 	}
+}
+
+
+// Helper funcs
+
+func resultsToList() []list.Item {
+    results := bubbletea_queries.List()
+    ItemsList := []list.Item{}
+
+    for _, r := range results {
+        ItemsList = append(ItemsList, item{title: r["task"], desc: r["done"], done: r["done"]})
+    }
+
+    return ItemsList
+}
+
+func (m model) marshallData() {
 }
