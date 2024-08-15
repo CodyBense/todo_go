@@ -3,6 +3,7 @@ TODO:
 
     add update, add, and delete functionality
         fix update to refresh after
+            maybe make global var of list.Items and have things point to it
 	figure out how to change item color based on done status
 	styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
 */
@@ -102,6 +103,7 @@ func Main() {
 
 // Helper funcs
 
+// adds all tasks to Item array
 func resultsToList() []list.Item {
 
     results := bubbletea_queries.List()
@@ -114,6 +116,7 @@ func resultsToList() []list.Item {
     return ItemsList
 }
 
+// Updates the status of an item
 func (m model) updateItem() {
 
     var currentIndex int
