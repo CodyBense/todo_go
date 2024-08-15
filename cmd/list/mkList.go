@@ -10,9 +10,7 @@ package list
 import (
 	"fmt"
 	"os"
-	"strconv"
 
-	"github.com/CodyBense/todo/cmd/mySql/bubbletea_queries"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -52,22 +50,19 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-        // switch msg.String() {
-        // case "ctrl+c":
-        //     return m, tea.Quit
-        // }
 		if msg.String() == "ctrl+c" {
 			return m, tea.Quit
 		}
         if msg.String() == "u" {
-            m.updateItem()
+            m.UpdateItem()
             return m, nil
         }
         if msg.String() == "d" {
-            m.removeItem()
+            m.RemoveItem()
             return m, nil
         }
         if msg.String() == "a" {
+            m.AddItem()
             return m, nil
         }
 	case tea.WindowSizeMsg:
@@ -86,7 +81,7 @@ func (m model) View() string {
 
 func Main() {
 
-    ItemsList := resultsToList()
+    ItemsList := ResultsToList()
     
     delegate := list.NewDefaultDelegate()
     delegate.Styles.SelectedTitle = delegate.Styles.SelectedTitle.Foreground(doneStyle)
@@ -102,62 +97,4 @@ func Main() {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
 	}
-}
-
-
-// Helper funcs
-
-// adds all tasks to Item array
-func resultsToList() []list.Item {
-
-    results := bubbletea_queries.List()
-
-    for _, r := range results {
-        ItemsList = append(ItemsList, item{title: r["task"], desc: r["done"], done: r["done"], id: r["id"]})
-    }
-
-    return ItemsList
-}
-
-// Updates the status of an item
-func (m model) updateItem() {
-
-    items := bubbletea_queries.List()
-    currentIndex := m.list.Index()
-    currentId := items[currentIndex]["id"]
-    i, err := strconv.Atoi(currentId)
-    if err != nil {
-        fmt.Println("Error converting string to int:", err)
-        return
-    }
-    currentStatus := items[currentIndex]["done"]
-
-    bubbletea_queries.Update(i)
-
-    if currentStatus == "false" {
-        m.list.SetItem(currentIndex, item{title: items[currentIndex]["task"], desc: "true", done: "true", id: items[currentIndex]["id"]})
-    } else {
-        m.list.SetItem(currentIndex, item{title: items[currentIndex]["task"], desc: "false", done: "false", id: items[currentIndex]["id"]})
-    }
-}
-
-// Deletes an item
-func (m model) removeItem() {
-
-    items := bubbletea_queries.List()
-    currentIndex := m.list.Index()
-    currentId := items[currentIndex]["id"]
-    i, err := strconv.Atoi(currentId)
-    if err != nil {
-        fmt.Println("Error converting string to int:", err)
-        return
-    }
-
-    bubbletea_queries.Remove(i)
-    m.list.RemoveItem(currentIndex)
-
-}
-
-// Adds an item
-func (m model) addItem() {
 }
