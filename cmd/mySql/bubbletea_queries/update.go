@@ -3,8 +3,8 @@ package bubbletea_queries
 import (
     "log"
 
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+    "database/sql"
+    _ "github.com/go-sql-driver/mysql"
 )
 
 func Update(idFlag int) {
@@ -22,16 +22,51 @@ func Update(idFlag int) {
         log.Fatalf("impossilbe to pint the connection: %s", pingErr)
     }
 
-    // Conduct insert
-    insertQuery := "UPDATE list SET done = true WHERE id = ?"
-    stmt, err := db.Prepare(insertQuery)
+    // Get status of desired task
+    var (
+        done bool
+    )
+    rows, err := db.Query("SELECT done FROM list WHERE id = ?", idFlag)
     if err != nil {
-        log.Fatalf("not able to prepare insert query: %s", err)
+        log.Fatal(err)
     }
-    defer stmt.Close()
+    defer rows.Close()
+    for rows.Next() {
+        err := rows.Scan(&done)
+        if err != nil {
+            log.Fatal(err)
+        }
+    }
+    err = rows.Err()
+    if err != nil {
+        log.Fatal(err)
+    }
 
-    _, err = stmt.Exec(idFlag)
-    if err != nil {
-        log.Fatalf("not able to execute insert query: %s", err)
+    // Conduct update
+    if done == false {
+        insertQuery := "UPDATE list SET done = true WHERE id = ?"
+        stmt, err := db.Prepare(insertQuery)
+        if err != nil {
+            log.Fatalf("not able to prepare insert query: %s", err)
+        }
+        defer stmt.Close()
+
+        _, err = stmt.Exec(idFlag)
+        if err != nil {
+            log.Fatalf("not able to execute insert query: %s", err)
+        }
+    } else {
+        insertQuery := "UPDATE list SET done = false WHERE id = ?"
+        stmt, err := db.Prepare(insertQuery)
+        if err != nil {
+            log.Fatalf("not able to prepare insert query: %s", err)
+        }
+        defer stmt.Close()
+
+        _, err = stmt.Exec(idFlag)
+        if err != nil {
+            log.Fatalf("not able to execute insert query: %s", err)
+        }
     }
+
 }

@@ -2,8 +2,6 @@
 TODO:
 
     add update, add, and delete functionality
-        fix update to refresh after
-            maybe make global var of list.Items and have things point to it
 	figure out how to change item color based on done status
 	styling, such as checkmarks next to completed items(maybe) or crossed out, thing next to selected item
 */
@@ -32,6 +30,8 @@ var (
     notDoneStyle = lipgloss.Color("#CC0000")
     doneStyle = lipgloss.Color("#29FF03")
 )
+
+var ItemsList []list.Item
 
 type item struct {
 	title, desc, done, id string
@@ -64,6 +64,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             return m, nil
         }
         if msg.String() == "d" {
+            m.removeItem()
             return m, nil
         }
 	case tea.WindowSizeMsg:
@@ -107,7 +108,6 @@ func Main() {
 func resultsToList() []list.Item {
 
     results := bubbletea_queries.List()
-    ItemsList := []list.Item{}
 
     for _, r := range results {
         ItemsList = append(ItemsList, item{title: r["task"], desc: r["done"], done: r["done"], id: r["id"]})
@@ -119,17 +119,38 @@ func resultsToList() []list.Item {
 // Updates the status of an item
 func (m model) updateItem() {
 
-    var currentIndex int
-
     items := bubbletea_queries.List()
-    currentIndex = m.list.Index()
+    currentIndex := m.list.Index()
     currentId := items[currentIndex]["id"]
     i, err := strconv.Atoi(currentId)
     if err != nil {
         fmt.Println("Error converting string to int:", err)
         return
     }
-    // fmt.Println(items[currentIndex]["id"])
+    currentStatus := items[currentIndex]["done"]
+
     bubbletea_queries.Update(i)
+
+    if currentStatus == "false" {
+        m.list.SetItem(currentIndex, item{title: items[currentIndex]["task"], desc: "true", done: "true", id: items[currentIndex]["id"]})
+    } else {
+        m.list.SetItem(currentIndex, item{title: items[currentIndex]["task"], desc: "false", done: "false", id: items[currentIndex]["id"]})
+    }
+}
+
+// Deletes an item
+func (m model) removeItem() {
+
+    items := bubbletea_queries.List()
+    currentIndex := m.list.Index()
+    currentId := items[currentIndex]["id"]
+    i, err := strconv.Atoi(currentId)
+    if err != nil {
+        fmt.Println("Error converting string to int:", err)
+        return
+    }
+
+    bubbletea_queries.Remove(i)
+    m.list.RemoveItem(currentIndex)
 
 }
