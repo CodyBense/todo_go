@@ -25,6 +25,9 @@ func List() {
     
     // sql.Connect()
 
+    // Header
+    fmt.Printf("id\t|\tdone\t|\ttask\n")
+
     var (
         id int
         task string
@@ -43,7 +46,7 @@ func List() {
         if err != nil {
             log.Fatal(err)
         }
-        fmt.Printf("%d | %v | %s\n", id, done, task)
+        fmt.Printf("%d \t|\t%v\t|\t%s\n", id, done, task)
     }
     err = rows.Err()
     if err != nil {
