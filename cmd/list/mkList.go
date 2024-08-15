@@ -67,6 +67,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             m.removeItem()
             return m, nil
         }
+        if msg.String() == "a" {
+            return m, nil
+        }
 	case tea.WindowSizeMsg:
 		h, v := appStyle.GetFrameSize()
 		m.list.SetSize(msg.Width-h, msg.Height-v)
@@ -153,4 +156,8 @@ func (m model) removeItem() {
     bubbletea_queries.Remove(i)
     m.list.RemoveItem(currentIndex)
 
+}
+
+// Adds an item
+func (m model) addItem() {
 }
