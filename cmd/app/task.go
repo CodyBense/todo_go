@@ -16,6 +16,10 @@ type Task struct {
     description string
 }
 
+func NewTask(status status, title, description string) Task {
+    return Task{status: status, title: title, description: description}
+}
+
 func (t *Task) Next() {
     if t.status == done {
         t.status = todo
