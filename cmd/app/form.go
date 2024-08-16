@@ -37,6 +37,10 @@ func (f Form) CreateTask() Task {
     return Task{f.col.status, f.title.Value(), f.description.Value()}
 }
 
+func (f Form) Init() tea.Cmd {
+    return nil
+}
+
 func (f Form) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
     var cmd tea.Cmd
     switch msg := msg.(type) {
@@ -45,10 +49,10 @@ func (f Form) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         f.col.list.Index()
     case tea.KeyMsg:
         switch {
-        case key.Matches(msg, key.Quit):
+        case key.Matches(msg, keys.Quit):
             return f, tea.Quit
-        case key.Matches(msg, key.Back):
-            return board.Upate(nil)
+        case key.Matches(msg, keys.Back):
+            return board.Update(nil)
         case key.Matches(msg, keys.Enter):
             if f.title.Focused() {
                 f.title.Blur()
