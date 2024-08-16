@@ -4,7 +4,6 @@ type Task struct {
     status      status
     title       string
     description string
-    id          int
 }
 
 func NewTask(status status, title, description string) Task {
