@@ -39,26 +39,25 @@ func (t Task) Description() string {
     return t.description
 }
 
-type Item struct {
-    title           string
-    descrtiption    string
-    done            string
-    id              string
-}
-
-func (i Item) Title() string {
-    return i.title
-}
-
-func (i Item) Description() string {
-    return i.descrtiption
-}
-
-func (i Item) Done() string {
-    return i.done
-}
-
-func (i Item) Id() string {
-    return i.id
-}
-
+// type Item struct {
+//     title           string
+//     descrtiption    string
+//     done            string
+//     id              string
+// }
+//
+// func (i Item) Title() string {
+//     return i.title
+// }
+//
+// func (i Item) Description() string {
+//     return i.descrtiption
+// }
+//
+// func (i Item) Done() string {
+//     return i.done
+// }
+//
+// func (i Item) Id() string {
+//     return i.id
+// }
