@@ -50,6 +50,15 @@ func New() *Model {
     return &Model{}
 }
 
+func (m *Model) MoveToNext() tea.Msg {
+    selectedItem := m.lists[m.focused].SelectedItem()
+    selectedTask := selectedItem.(Task)
+    m.lists[selectedTask.status].RemoveItem(m.lists[m.focused].Index())
+    selectedTask.Next()
+    m.lists[selectedTask.status].InsertItem(len(m.lists[selectedTask.status].Items())-1, list.Item(selectedTask))
+    return nil
+}
+
 func (m *Model) Next() {
     if m.focused == done {
         m.focused = todo
@@ -112,10 +121,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
             return m, tea.Quit
         case "left", "h":
             m.Prev()
-            return m, nil
         case "right", "l":
             m.Next()
-            return m, nil
+        case "enter":
+            return m, m.MoveToNext
         }
     }
     var cmd tea.Cmd

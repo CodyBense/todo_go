@@ -15,3 +15,11 @@ type Task struct {
     title       string
     description string
 }
+
+func (t *Task) Next() {
+    if t.status == done {
+        t.status = todo
+    } else {
+        t.status++
+    }
+}
