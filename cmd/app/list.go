@@ -38,6 +38,7 @@ func New() *Model {
 
 func (m *Model) initLists(width, height int) {
     defaultList := list.New([]list.Item{}, list.NewDefaultDelegate(), width/divsor, height)
+    defaultList.SetShowHelp(false)
     m.lists = []list.Model{defaultList, defaultList, defaultList}
 
     // Init To Do
