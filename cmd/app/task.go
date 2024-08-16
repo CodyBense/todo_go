@@ -2,6 +2,8 @@ package app
 
 type status int
 
+const divsor = 4
+
 const (
     todo status = iota
     inProgress
@@ -9,7 +11,7 @@ const (
 )
 
 type Task struct {
-    status status
-    title string
+    status      status
+    title       string
     description string
 }

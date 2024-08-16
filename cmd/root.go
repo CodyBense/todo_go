@@ -26,7 +26,7 @@ to quickly create a Cobra application.`,
 	// has an action associated with it:
     // insert call to bubbletea table func
 	// Run: func(cmd *cobra.Command, args []string) { table.Main() },
-	Run: func(cmd *cobra.Command, args []string) { list.Main() },
+	Run: func(cmd *cobra.Command, args []string) { app.Main() },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
