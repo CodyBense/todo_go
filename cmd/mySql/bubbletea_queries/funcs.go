@@ -2,10 +2,11 @@ package bubbletea_queries
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 )
 
-func Add(task, state *string) {
+func Add(task, state, table string) {
     // Open Mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306/List")
     if err != nil {
@@ -21,7 +22,7 @@ func Add(task, state *string) {
 
 
     // Conduct insert
-    insertQuery := "INSERT INTO {table_name} (task, state) VALUES (?, ?)"
+    insertQuery := fmt.Sprintf("INSERT INTO %s (task, state) VALUES (?, ?)", table)
     stmt, err := db.Prepare(insertQuery)
     if err != nil {
         log.Fatalf("not able to prepare insert query: %s", err)

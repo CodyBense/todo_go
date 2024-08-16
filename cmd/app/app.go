@@ -44,6 +44,7 @@ func Main() {
 	board = NewBoard()
 	board.initLists()
 	p := tea.NewProgram(board)
+	// p := tea.NewProgram(board, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

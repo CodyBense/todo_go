@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -65,6 +67,7 @@ func (c column) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			f := newDefaultForm()
 			f.index = APPEND
 			f.col = c
+            fmt.Println(f.col.list)
 			return f.Update(nil)
 		case key.Matches(msg, keys.Delete):
 			return c, c.DeleteCurrent()
