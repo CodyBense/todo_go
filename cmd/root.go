@@ -7,7 +7,8 @@ import (
 	"os"
 
 	// "github.com/CodyBense/todo/cmd/table"
-    "github.com/CodyBense/todo/cmd/list"
+    "github.com/CodyBense/todo/cmd/app/list"
+    // "github.com/CodyBense/todo/cmd/list"
 	"github.com/spf13/cobra"
 )
 
