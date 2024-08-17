@@ -1,6 +1,8 @@
 package app
 
-import "github.com/charmbracelet/bubbles/list"
+import (
+	"github.com/charmbracelet/bubbles/list"
+)
 
 // Use for mock data for testing
 
@@ -17,6 +19,8 @@ func (b *Board) initLists() {
 		Task{status: todo, title: "eat sushi", description: "negitoro roll, miso soup, rice"},
 		Task{status: todo, title: "fold laundry", description: "or wear wrinkly t-shirts"},
 	})
+    // b.cols = append(b.cols[todo].list.Items(), b.cols[todo].list.SetItem(len(b.cols[todo].list.Items()), NewTask(todo, "test", "test")))
+    // b.SqlList()
 	// Init in progress
 	b.cols[inProgress].list.Title = "In Progress"
 	b.cols[inProgress].list.SetItems([]list.Item{

@@ -1,0 +1,9 @@
+debug 2024/08/17 08:09:18 impossible to create the connection: invalid DSN: network address not terminated (missing closing brace)
+debug 2024/08/17 08:09:33 impossible to create the connection: invalid DSN: network address not terminated (missing closing brace)
+debug 2024/08/17 08:10:48 impossible to create the connection: invalid DSN: network address not terminated (missing closing brace)
+debug 2024/08/17 08:12:29 impossible to create the connection: invalid DSN: network address not terminated (missing closing brace)
+debug 2024/08/17 08:18:55 task: 
+debug 2024/08/17 08:21:48 task: To Do
+debug 2024/08/17 08:25:29 task: In Progress
+debug 2024/08/17 08:25:34 task: Done
+debug 2024/08/17 08:32:42 task:  description:  table: To Do
