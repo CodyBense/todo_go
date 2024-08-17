@@ -6,7 +6,11 @@ import (
 	"log"
 )
 
-func Add(task, state, table string) {
+/* TODO: Move to app dir
+         made func (b Board)
+*/
+
+func Add(task, state string) {
     // Open Mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306/List")
     if err != nil {
@@ -22,7 +26,7 @@ func Add(task, state, table string) {
 
 
     // Conduct insert
-    insertQuery := fmt.Sprintf("INSERT INTO %s (task, state) VALUES (?, ?)", table)
+    insertQuery := fmt.Sprintf("INSERT INTO %s (task, state) VALUES (?, ?)", state)
     stmt, err := db.Prepare(insertQuery)
     if err != nil {
         log.Fatalf("not able to prepare insert query: %s", err)
@@ -70,6 +74,7 @@ func List()  {
         if err != nil {
             log.Fatal(err)
         }
+        // output rows here
     }
     err = rows.Err()
     if err != nil {
@@ -87,6 +92,7 @@ func List()  {
         if err != nil {
             log.Fatal(err)
         }
+        // output rows here
     }
     err = rows.Err()
     if err != nil {
@@ -104,6 +110,7 @@ func List()  {
         if err != nil {
             log.Fatal(err)
         }
+        // output rows here
     }
     err = rows.Err()
     if err != nil {
