@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"strings"
 )
 
 /* TODO: Move to app dir
@@ -12,12 +11,17 @@ import (
 */
 
 func SqlAdd(task, description, table string) {
-    // Remove spaces and to lower for table input
-    tableName := strings.ReplaceAll(table," ","")
-    tableName = strings.ToLower(tableName)
-
+    // Determines table
+    var tableName string
+    if table == "0" {
+        tableName = "todo"
+    } else if table == "1" {
+        tableName = "inProgress"
+    } else {
+        tableName = "done"
+    }
     // Open Mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306/List")
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }

@@ -1,6 +1,9 @@
 package app
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
@@ -40,7 +43,14 @@ func (m *Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         m.loaded = true
         return m, tea.Batch(cmds...)
     case Form:
-        return m, m.cols[m.focused].Set(msg.index, msg.CreateTask())
+        task := msg.CreateTask()
+        taskTitle := task.Title()
+        taskDescription := task.Description()
+        table := fmt.Sprint(m.focused)
+        log.Printf("task: %s description: %s table: %s", taskTitle, taskDescription, table)
+        SqlAdd(taskTitle, taskDescription, table)
+        // return m, m.cols[m.focused].Set(msg.index, msg.CreateTask())
+        return m, m.cols[m.focused].Set(msg.index, task)
     case moveMsg:
         return m, m.cols[m.focused.getNext()].Set(APPEND, msg.Task)
     case tea.KeyMsg:

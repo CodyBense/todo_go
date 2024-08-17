@@ -1,8 +1,6 @@
 package app
 
 import (
-	"log"
-
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -68,8 +66,6 @@ func (c column) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			f.index = APPEND
 			f.col = c
             // TODO: figure out how to get task and description
-            log.Printf("task: %s description: %s table: %s", f.title.Value(), f.description.Value(), f.col.list.Title)
-            // SqlAdd(f.title.Value(),f.description.Value(), f.col.list.Title)
 			return f.Update(nil)
 		case key.Matches(msg, keys.Delete):
 			return c, c.DeleteCurrent()
