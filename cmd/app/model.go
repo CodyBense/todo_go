@@ -5,7 +5,6 @@ import (
 
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -88,8 +87,4 @@ func (m *Board) View() string {
             m.cols[done].View(),
         )
         return lipgloss.JoinVertical(lipgloss.Left, board, m.help.View(keys))
-}
-
-func (m *Board) GetItem() list.Item {
-    return m.cols[m.focused].list.SelectedItem()
 }

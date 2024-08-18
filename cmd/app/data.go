@@ -1,8 +1,5 @@
 package app
 
-import (
-)
-
 // Use for mock data for testing
 
 func (b *Board) initLists() {

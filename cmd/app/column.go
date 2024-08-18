@@ -83,8 +83,7 @@ func (c column) View() string {
 
 func (c *column) DeleteCurrent() tea.Cmd {
 	if len(c.list.VisibleItems()) > 0 {
-        item := c.list.SelectedItem().(Task)
-        board.SqlRemove(c.list.Title, item.title)
+        board.SqlRemove(c.list.Title, c.list.SelectedItem().(Task).title)
 		c.list.RemoveItem(c.list.Index())
 	}
 
