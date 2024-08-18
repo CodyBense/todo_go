@@ -229,7 +229,25 @@ func (b *Board) SqlRemove(table, task string) {
 }
 
 
-func SqlUpdate(table, task string) {
+func SqlUpdate(currentTable, task, description string) {
+
+    var nextTable, tableName string
+
+    if currentTable == "To Do" {
+        tableName = "todo"
+    } else if currentTable == "In Progress" {
+        tableName = "inProgress"
+    } else {
+        tableName = "done"
+    }
+
+    if tableName == "todo" {
+        nextTable = "inProgress"
+    } else if tableName == "inProgress" {
+        nextTable = "done"
+    } else {
+        nextTable = "todo"
+    }
 
     // Open Mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
@@ -245,15 +263,27 @@ func SqlUpdate(table, task string) {
     }
 
     // Conduct update
-    insertQuery := "UPDATE list SET done = true WHERE id = ?"
-    stmt, err := db.Prepare(insertQuery)
+    deleteQuery := fmt.Sprintf("DELTE FROM %s WHERE task = ?", currentTable)
+    stmt, err := db.Prepare(deleteQuery)
     if err != nil {
-        log.Fatalf("not able to prepare insert query: %s", err)
+        log.Fatalf("not able to prepare delete (update) query: %s", err)
     }
     defer stmt.Close()
 
     _, err = stmt.Exec(task)
     if err != nil {
-        log.Fatalf("not able to execute insert query: %s", err)
+        log.Fatalf("not able to execute delete (update) query: %s", err)
+    }
+
+    insertQuery := fmt.Sprintf("INSERT INTO %s (task, description) VALUES (?,?)", nextTable)
+    stmt, err = db.Prepare(insertQuery)
+    if err != nil {
+        log.Fatalf("not able to prepare insert (update) query: %s", err)
+    }
+    defer stmt.Close()
+
+    _, err = stmt.Exec(task, description)
+    if err != nil {
+        log.Fatalf("not abel to execute update query: %s", err)
     }
 }
