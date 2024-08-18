@@ -1,8 +1,6 @@
 package app
 
 import (
-	"log"
-
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -71,8 +69,7 @@ func (c column) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keys.Delete):
 			return c, c.DeleteCurrent()
 		case key.Matches(msg, keys.Enter):
-            log.Print(c.list.Title)
-            // SqlUpdate(c.list.Title, c.list.SelectedItem().(Task).Title(), c.list.SelectedItem().(Task).Description())
+            SqlUpdate(c.list.Title, c.list.SelectedItem().(Task).Title(), c.list.SelectedItem().(Task).Description())
 			return c, c.MoveToNext()
 		}
 	}

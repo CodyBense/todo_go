@@ -249,44 +249,44 @@ func SqlUpdate(currentTable, task, description string) {
         nextTable = "todo"
     }
 
-    board.SqlRemove(tableName, task)
-    SqlAdd(task, description, nextTable)
+    // board.SqlRemove(tableName, task)
+    // SqlAdd(task, description, nextTable)
 
-    // // Open Mysql connection
-    // db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
-    // if err != nil {
-    //     log.Fatalf("impossible to create the connection: %s", err)
-    // }
-    // defer db.Close()
-    //
-    // // Test Mysql connection
-    // pingErr := db.Ping()
-    // if err != nil {
-    //     log.Fatalf("impossilbe to pint the connection: %s", pingErr)
-    // }
-    //
-    // // Conduct update
-    // deleteQuery := fmt.Sprintf("DELETE FROM %s WHERE task = ?", tableName)
-    // stmt, err := db.Prepare(deleteQuery)
-    // if err != nil {
-    //     log.Fatalf("not able to prepare delete (update) query: %s", err)
-    // }
-    // defer stmt.Close()
-    //
-    // _, err = stmt.Exec(task)
-    // if err != nil {
-    //     log.Fatalf("not able to execute delete (update) query: %s", err)
-    // }
-    //
-    // insertQuery := fmt.Sprintf("INSERT INTO %s (task, description) VALUES (?,?)", nextTable)
-    // stmt, err = db.Prepare(insertQuery)
-    // if err != nil {
-    //     log.Fatalf("not able to prepare insert (update) query: %s", err)
-    // }
-    // defer stmt.Close()
-    //
-    // _, err = stmt.Exec(task, description)
-    // if err != nil {
-    //     log.Fatalf("not abel to execute update query: %s", err)
-    // }
+    // Open Mysql connection
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    if err != nil {
+        log.Fatalf("impossible to create the connection: %s", err)
+    }
+    defer db.Close()
+
+    // Test Mysql connection
+    pingErr := db.Ping()
+    if err != nil {
+        log.Fatalf("impossilbe to pint the connection: %s", pingErr)
+    }
+
+    // Conduct update
+    deleteQuery := fmt.Sprintf("DELETE FROM %s WHERE task = ?", tableName)
+    stmt, err := db.Prepare(deleteQuery)
+    if err != nil {
+        log.Fatalf("not able to prepare delete (update) query: %s", err)
+    }
+    defer stmt.Close()
+
+    _, err = stmt.Exec(task)
+    if err != nil {
+        log.Fatalf("not able to execute delete (update) query: %s", err)
+    }
+
+    insertQuery := fmt.Sprintf("INSERT INTO %s (task, description) VALUES (?,?)", nextTable)
+    stmt, err = db.Prepare(insertQuery)
+    if err != nil {
+        log.Fatalf("not able to prepare insert (update) query: %s", err)
+    }
+    defer stmt.Close()
+
+    _, err = stmt.Exec(task, description)
+    if err != nil {
+        log.Fatalf("not abel to execute update query: %s", err)
+    }
 }
