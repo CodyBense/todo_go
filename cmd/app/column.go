@@ -65,7 +65,6 @@ func (c column) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			f := newDefaultForm()
 			f.index = APPEND
 			f.col = c
-            // TODO: figure out how to get task and description
 			return f.Update(nil)
 		case key.Matches(msg, keys.Delete):
 			return c, c.DeleteCurrent()
@@ -83,6 +82,8 @@ func (c column) View() string {
 
 func (c *column) DeleteCurrent() tea.Cmd {
 	if len(c.list.VisibleItems()) > 0 {
+        item := c.list.SelectedItem().(Task)
+        board.SqlRemove(c.list.Title, item.title)
 		c.list.RemoveItem(c.list.Index())
 	}
 

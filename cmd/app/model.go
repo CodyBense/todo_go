@@ -2,10 +2,10 @@ package app
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -44,12 +44,7 @@ func (m *Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         return m, tea.Batch(cmds...)
     case Form:
         task := msg.CreateTask()
-        taskTitle := task.Title()
-        taskDescription := task.Description()
-        table := fmt.Sprint(m.focused)
-        log.Printf("task: %s description: %s table: %s", taskTitle, taskDescription, table)
-        SqlAdd(taskTitle, taskDescription, table)
-        // return m, m.cols[m.focused].Set(msg.index, msg.CreateTask())
+        SqlAdd(task.title, task.Description(), fmt.Sprint(m.focused))
         return m, m.cols[m.focused].Set(msg.index, task)
     case moveMsg:
         return m, m.cols[m.focused.getNext()].Set(APPEND, msg.Task)
@@ -93,4 +88,8 @@ func (m *Board) View() string {
             m.cols[done].View(),
         )
         return lipgloss.JoinVertical(lipgloss.Left, board, m.help.View(keys))
+}
+
+func (m *Board) GetItem() list.Item {
+    return m.cols[m.focused].list.SelectedItem()
 }

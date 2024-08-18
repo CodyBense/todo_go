@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+    "github.com/charmbracelet/bubbles/list"
 )
 
 /* TODO: Move to app dir
@@ -49,9 +51,9 @@ func SqlAdd(task, description, table string) {
 
 }
 
-func (b *Board) SqlList()  {
+func (b *Board) SqlListTodo() []list.Item{
     // Open mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -66,8 +68,9 @@ func (b *Board) SqlList()  {
     // sql.Connect()
 
     var (
-        task string
-        state string
+        task        string
+        description string
+        itemsList   []list.Item
     )
 
     // Conduct query
@@ -80,60 +83,126 @@ func (b *Board) SqlList()  {
     defer rows.Close()
 
     for rows.Next() {
-        err := rows.Scan(&task, &state)
+        err := rows.Scan(&task, &description)
         if err != nil {
             log.Fatal(err)
         }
         // output rows here
-        fmt.Println(b.cols[todo].list.Items())
-        // b.cols[todo].list = append(b.cols[todo].list , NewTask(todo, task, state)) 
+        itemsList = append(itemsList, NewTask(todo, task, description))
     }
     err = rows.Err()
     if err != nil {
         log.Fatal(err)
     }
-
-    // Select all from inProgress
-    rows, err = db.Query("SELECT * FROM inProgress")
-    if err != nil {
-        log.Fatalf("not able to conduct query: %s", err)
-    }
-    defer rows.Close()
-
-    for rows.Next() {
-        err := rows.Scan(&task, &state)
-        if err != nil {
-            log.Fatal(err)
-        }
-        // output rows here
-    }
-    err = rows.Err()
-    if err != nil {
-        log.Fatal(err)
-    }
-    // Select all from done
-    rows, err = db.Query("SELECT * FROM done")
-    if err != nil {
-        log.Fatalf("not able to conduct query: %s", err)
-    }
-    defer rows.Close()
-
-    for rows.Next() {
-        err := rows.Scan(&task, &state)
-        if err != nil {
-            log.Fatal(err)
-        }
-        // output rows here
-    }
-    err = rows.Err()
-    if err != nil {
-        log.Fatal(err)
-    }
+    return itemsList
 }
 
-func SqlRemove(table, task string) {
+
+func (b *Board) SqlListInProgress() []list.Item{
     // Open mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    if err != nil {
+        log.Fatalf("impossible to create the connection: %s", err)
+    }
+    defer db.Close()
+
+    // Test mysql connection
+    pingErr := db.Ping()
+    if err != nil {
+        log.Fatalf("impossilbe to pint the connection: %s", pingErr)
+    }
+    
+    // sql.Connect()
+
+    var (
+        task        string
+        description string
+        itemsList   []list.Item
+    )
+
+    // Conduct query
+
+    // Select all from todo
+    rows, err := db.Query("SELECT * FROM inProgress")
+    if err != nil {
+        log.Fatalf("not able to conduct query: %s", err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        err := rows.Scan(&task, &description)
+        if err != nil {
+            log.Fatal(err)
+        }
+        // output rows here
+        itemsList = append(itemsList, NewTask(inProgress, task, description))
+    }
+    err = rows.Err()
+    if err != nil {
+        log.Fatal(err)
+    }
+    return itemsList
+}
+
+
+func (b *Board) SqlListDone() []list.Item{
+    // Open mysql connection
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    if err != nil {
+        log.Fatalf("impossible to create the connection: %s", err)
+    }
+    defer db.Close()
+
+    // Test mysql connection
+    pingErr := db.Ping()
+    if err != nil {
+        log.Fatalf("impossilbe to pint the connection: %s", pingErr)
+    }
+    
+    // sql.Connect()
+
+    var (
+        task        string
+        description string
+        itemsList   []list.Item
+    )
+
+    // Conduct query
+
+    // Select all from todo
+    rows, err := db.Query("SELECT * FROM done")
+    if err != nil {
+        log.Fatalf("not able to conduct query: %s", err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        err := rows.Scan(&task, &description)
+        if err != nil {
+            log.Fatal(err)
+        }
+        // output rows here
+        itemsList = append(itemsList, NewTask(done, task, description))
+    }
+    err = rows.Err()
+    if err != nil {
+        log.Fatal(err)
+    }
+    return itemsList
+}
+
+func (b *Board) SqlRemove(table, task string) {
+    // Determines table
+    var tableName string
+    if table == "To Do" {
+        tableName = "todo"
+    } else if table == "In Progress" {
+        tableName = "inProgress"
+    } else {
+        tableName = "done"
+    }
+    // Open mysql connection
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -146,7 +215,7 @@ func SqlRemove(table, task string) {
     }
 
     // Conduct query
-    removeQuery := fmt.Sprintf("DELETE FROM %v WHERE task = ?", table)
+    removeQuery := fmt.Sprintf("DELETE FROM %v WHERE task = ?", tableName)
     stmt, err := db.Prepare(removeQuery)
     if err != nil {
         log.Fatalf("not able to prepare remove query: %s", err)
@@ -163,7 +232,7 @@ func SqlRemove(table, task string) {
 func SqlUpdate(table, task string) {
 
     // Open Mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }

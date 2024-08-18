@@ -1,3 +1,0 @@
-debug 2024/08/17 11:44:05 impossible to create the connection: invalid DSN: network address not terminated (missing closing brace)
-debug 2024/08/17 11:50:23 task: new test description:  table: 0
-debug 2024/08/17 11:51:36 task: new test 2 description: new test 2 table: 0
