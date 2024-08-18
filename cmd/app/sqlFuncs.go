@@ -263,7 +263,7 @@ func SqlUpdate(currentTable, task, description string) {
     }
 
     // Conduct update
-    deleteQuery := fmt.Sprintf("DELTE FROM %s WHERE task = ?", currentTable)
+    deleteQuery := fmt.Sprintf("DELETE FROM %s WHERE task = ?", currentTable)
     stmt, err := db.Prepare(deleteQuery)
     if err != nil {
         log.Fatalf("not able to prepare delete (update) query: %s", err)

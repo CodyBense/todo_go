@@ -69,6 +69,7 @@ func (c column) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, keys.Delete):
 			return c, c.DeleteCurrent()
 		case key.Matches(msg, keys.Enter):
+            SqlUpdate(c.list.Title, c.list.SelectedItem().(Task).Title(), c.list.SelectedItem().(Task).Description())
 			return c, c.MoveToNext()
 		}
 	}
