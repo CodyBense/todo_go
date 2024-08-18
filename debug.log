@@ -1,0 +1,16 @@
+debug 2024/08/18 17:45:34 not able to prepare delete (update) query: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DELTE FROM To Do WHERE task = ?' at line 1
+debug 2024/08/18 17:58:16 not able to prepare delete (update) query: Error 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'To Do WHERE task = ?' at line 1
+debug 2024/08/18 17:59:56 To Do
+debug 2024/08/18 18:06:15 To Do
+debug 2024/08/18 18:06:18 In Progress
+debug 2024/08/18 18:11:40 To Do
+debug 2024/08/18 18:12:12 To Do
+debug 2024/08/18 18:16:24 To Do
+debug 2024/08/18 18:16:59 To Do
+debug 2024/08/18 18:23:15 To Do
+debug 2024/08/18 18:23:17 To Do
+debug 2024/08/18 18:23:18 To Do
+debug 2024/08/18 18:23:19 In Progress
+debug 2024/08/18 18:23:22 Done
+debug 2024/08/18 18:23:33 To Do
+debug 2024/08/18 18:51:19 To Do

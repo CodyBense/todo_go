@@ -1,8 +1,11 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -40,7 +43,9 @@ func (m *Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
         m.loaded = true
         return m, tea.Batch(cmds...)
     case Form:
-        return m, m.cols[m.focused].Set(msg.index, msg.CreateTask())
+        task := msg.CreateTask()
+        SqlAdd(task.title, task.Description(), fmt.Sprint(m.focused))
+        return m, m.cols[m.focused].Set(msg.index, task)
     case moveMsg:
         return m, m.cols[m.focused.getNext()].Set(APPEND, msg.Task)
     case tea.KeyMsg:
@@ -76,10 +81,15 @@ func (m *Board) View() string {
         return "loading..."
     }
     board := lipgloss.JoinHorizontal(
-            lipgloss.Left,
+            // lipgloss.Left,
+            lipgloss.Top,
             m.cols[todo].View(),
             m.cols[inProgress].View(),
             m.cols[done].View(),
         )
         return lipgloss.JoinVertical(lipgloss.Left, board, m.help.View(keys))
+}
+
+func (m *Board) GetItem() list.Item {
+    return m.cols[m.focused].list.SelectedItem()
 }
