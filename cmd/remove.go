@@ -16,13 +16,15 @@ var removeCmd = &cobra.Command{
 func init() {
     rootCmd.AddCommand(removeCmd)
 
-    removeCmd.Flags().IntP("idFlag", "i", 0, "What task needs to be removed")
+    removeCmd.Flags().StringP("taskFlag", "t", "", "What task needs to be removed")
+    removeCmd.Flags().StringP("statusFlag", "s", "", "The status of the task")
 }
 
 func remove(cmd *cobra.Command, args []string) {
 
     // Handles task flag parsing
-    idFlag, _ := cmd.Flags().GetInt("idFlag")
+    taskFlag, _ := cmd.Flags().GetString("taskFlag")
+    statusFlag, _ := cmd.Flags().GetString("statusFlag")
 
-    mySql.Remove(&idFlag)
+    mySql.Remove(&taskFlag, &statusFlag)
 }

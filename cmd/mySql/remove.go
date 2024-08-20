@@ -1,16 +1,26 @@
 package mySql
 
 import (
+	"fmt"
 	"log"
+	"os"
 
 	"database/sql"
+
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
-func Remove(idFlag *int) {
+func Remove(taskFlag, statusFlag *string) {
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
 
     // Open Mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/todo")
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -23,14 +33,14 @@ func Remove(idFlag *int) {
     }
 
     // Conduct insert
-    insertQuery := "DELETE FROM list WHERE id = ?"
-    stmt, err := db.Prepare(insertQuery)
+    deleteQuery := fmt.Sprintf("DELETE FROM %s WHERE task = ?", *statusFlag)
+    stmt, err := db.Prepare(deleteQuery)
     if err != nil {
         log.Fatalf("not able to prepare insert query: %s", err)
     }
     defer stmt.Close()
 
-    _, err = stmt.Exec(idFlag)
+    _, err = stmt.Exec(taskFlag)
     if err != nil {
         log.Fatalf("not able to execute insert query: %s", err)
     }
