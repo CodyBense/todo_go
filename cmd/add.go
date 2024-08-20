@@ -16,13 +16,17 @@ var addCmd = &cobra.Command{
 func init() {
     rootCmd.AddCommand(addCmd)
 
-    addCmd.Flags().StringP("taskFlag", "t", "", "What task needs to be added")
+    addCmd.Flags().StringP("taskFlag", "t", "", "Task to be added")
+    addCmd.Flags().StringP("descriptionFlag", "d", "", "Description of the task")
+    addCmd.Flags().StringP("statusFlag", "s", "", "What table to add it to, ie status")
 }
 
 func add(cmd *cobra.Command, args []string) {
 
     // Handles task flag parsing
     taskFlag, _ := cmd.Flags().GetString("taskFlag")
+    descriptionFlag, _ := cmd.Flags().GetString("descriptionFlag")
+    statusFlag, _ := cmd.Flags().GetString("statusFlag")
     
-    mySql.Add(&taskFlag)
+    mySql.Add(&taskFlag, &descriptionFlag, &statusFlag)
 }
