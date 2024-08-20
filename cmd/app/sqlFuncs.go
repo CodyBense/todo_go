@@ -67,7 +67,7 @@ func (b *Board) SqlListTodo() []list.Item{
         log.Fatalln("Error loading .env file")
     }
     connection := os.Getenv("MYSQL_CONNECTION")
-    
+
     // Open Mysql connection
     db, err := sql.Open("mysql", connection)
     if err != nil {
