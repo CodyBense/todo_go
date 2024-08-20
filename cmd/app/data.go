@@ -1,6 +1,9 @@
 package app
 
 import (
+	"log"
+
+	"github.com/charmbracelet/lipgloss"
 )
 
 // Use for mock data for testing
@@ -13,6 +16,8 @@ func (b *Board) initLists() {
     }
     // Init To Do
 	b.cols[todo].list.Title = "To Do"
+    b.cols[todo].list.Styles.Title.Foreground(lipgloss.Color("2"))
+    log.Printf("todo foreground color: %s", b.cols[todo].list.Styles.Title.GetForeground())
     itemsList := b.SqlListTodo()
     b.cols[todo].list.SetItems(itemsList)
 
