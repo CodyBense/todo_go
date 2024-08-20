@@ -4,8 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
-    "github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/list"
+	"github.com/joho/godotenv"
 )
 
 /* TODO: Move to app dir
@@ -22,8 +24,15 @@ func SqlAdd(task, description, table string) {
     } else {
         tableName = "done"
     }
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
+    
     // Open Mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -52,8 +61,15 @@ func SqlAdd(task, description, table string) {
 }
 
 func (b *Board) SqlListTodo() []list.Item{
-    // Open mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
+    
+    // Open Mysql connection
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -99,8 +115,15 @@ func (b *Board) SqlListTodo() []list.Item{
 
 
 func (b *Board) SqlListInProgress() []list.Item{
-    // Open mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
+    
+    // Open Mysql connection
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -146,8 +169,15 @@ func (b *Board) SqlListInProgress() []list.Item{
 
 
 func (b *Board) SqlListDone() []list.Item{
-    // Open mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
+    
+    // Open Mysql connection
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -201,8 +231,15 @@ func (b *Board) SqlRemove(table, task string) {
     } else {
         tableName = "done"
     }
-    // Open mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
+    
+    // Open Mysql connection
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
@@ -252,8 +289,15 @@ func SqlUpdate(currentTable, task, description string) {
     // board.SqlRemove(tableName, task)
     // SqlAdd(task, description, nextTable)
 
+    // Load environment vairable
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatalln("Error loading .env file")
+    }
+    connection := os.Getenv("MYSQL_CONNECTION")
+    
     // Open Mysql connection
-    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
+    db, err := sql.Open("mysql", connection)
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
