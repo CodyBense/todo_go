@@ -10,7 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Add( taskFlag, descriptionFlag, statusFlag *string) {
+func Connect() (*sql.DB, error) {
     // Load environment vairable
     err := godotenv.Load()
     if err != nil {
@@ -23,13 +23,19 @@ func Add( taskFlag, descriptionFlag, statusFlag *string) {
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
-    defer db.Close()
 
     // Test Mysql connection
     pingErr := db.Ping()
     if err != nil {
         log.Fatalf("impossilbe to pint the connection: %s", pingErr)
     }
+
+    return db, err
+}
+
+func Add( taskFlag, descriptionFlag, statusFlag *string) {
+    // Open and test SQL connections
+    db, err := Connect()
 
     // Conduct insert
     insertQuery := fmt.Sprintf("INSERT INTO %s (task, description) VALUES (?,?)", *statusFlag)
@@ -43,22 +49,13 @@ func Add( taskFlag, descriptionFlag, statusFlag *string) {
     if err != nil {
         log.Fatalf("not able to execute insert query: %s", err)
     }
+
+    db.Close()
 }
 
 func List() {
-    // Load environment variable
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatalln("Error loading .env file")
-    }
-    connection := os.Getenv("MYSQL_CONNECTION")
-
-    // Open mysql connection
-    db, err := sql.Open("mysql", connection)
-    if err != nil {
-        log.Fatalf("impossible to create the connection: %s", err)
-    }
-    defer db.Close()
+    // Open and Test SQL connection
+    db, err := Connect()
 
     // Test mysql connection
     pingErr := db.Ping()
@@ -139,28 +136,13 @@ func List() {
     if err != nil {
         log.Fatal(err)
     }
+
+    db.Close()
 }
 
 func Remove(taskFlag, statusFlag *string) {
-    // Load environment vairable
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatalln("Error loading .env file")
-    }
-    connection := os.Getenv("MYSQL_CONNECTION")
-
-    // Open Mysql connection
-    db, err := sql.Open("mysql", connection)
-    if err != nil {
-        log.Fatalf("impossible to create the connection: %s", err)
-    }
-    defer db.Close()
-
-    // Test Mysql connection
-    pingErr := db.Ping()
-    if err != nil {
-        log.Fatalf("impossilbe to pint the connection: %s", pingErr)
-    }
+    // Open and Test SQL connection
+    db, err := Connect()
 
     // Conduct insert
     deleteQuery := fmt.Sprintf("DELETE FROM %s WHERE task = ?", *statusFlag)
@@ -174,22 +156,13 @@ func Remove(taskFlag, statusFlag *string) {
     if err != nil {
         log.Fatalf("not able to execute insert query: %s", err)
     }
+
+    db.Close()
 }
 
 func Update(taskFlag, statusFlag, updateFlag *string) {
-    // Load environment vairable
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatalln("Error loading .env file")
-    }
-    connection := os.Getenv("MYSQL_CONNECTION")
-
-    // Open Mysql connection
-    db, err := sql.Open("mysql", connection)
-    if err != nil {
-        log.Fatalf("impossible to create the connection: %s", err)
-    }
-    defer db.Close()
+    // Open and Test SQL connection
+    db, err := Connect()
 
     // Test Mysql connection
     pingErr := db.Ping()
@@ -237,4 +210,6 @@ func Update(taskFlag, statusFlag, updateFlag *string) {
     if err != nil {
         log.Fatalf("not able to execute insert (update) query: %s", err)
     }
+
+    db.Close()
 }
