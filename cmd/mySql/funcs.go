@@ -3,23 +3,14 @@ package mySql
 import (
 	"fmt"
 	"log"
-    "os"
 
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 )
 
 func Connect() (*sql.DB, error) {
-    // Load environment vairable
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatalln("Error loading .env file")
-    }
-    connection := os.Getenv("MYSQL_CONNECTION")
-
     // Open Mysql connection
-    db, err := sql.Open("mysql", connection)
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }

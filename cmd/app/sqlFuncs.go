@@ -4,10 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/charmbracelet/bubbles/list"
-	"github.com/joho/godotenv"
 )
 
 /* TODO: Move to app dir
@@ -15,15 +13,8 @@ import (
 */
 
 func SqlConnect() (*sql.DB, error) {
-    // Load environment vairable
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatalln("Error loading .env file")
-    }
-    connection := os.Getenv("MYSQL_CONNECTION")
-    
     // Open Mysql connection
-    db, err := sql.Open("mysql", connection)
+    db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
         log.Fatalf("impossible to create the connection: %s", err)
     }
