@@ -17,14 +17,18 @@ var updateCmd = &cobra.Command{
 func init() {
     rootCmd.AddCommand(updateCmd)
 
-    updateCmd.Flags().IntP("idFlag", "i", 0, "What task needs to be updated")
+    updateCmd.Flags().StringP("taskFlag", "t", "", "What task needs to be updated")
+    updateCmd.Flags().StringP("statusFlag", "s", "", "Currents status of task")
+    updateCmd.Flags().StringP("updateFlag", "u", "", "Updates status of task")
 }
 
 func update(cmd *cobra.Command, args []string) {
 
     // Handles task flag parsing
-    idFlag, _ := cmd.Flags().GetInt("idFlag")
+    taskFlag, _ := cmd.Flags().GetString("taskFlag")
+    statusFlag, _ := cmd.Flags().GetString("statusFlag")
+    updateFlag, _ := cmd.Flags().GetString("updateFlag")
 
     // Conducts the update
-    mySql.Update(&idFlag)
+    mySql.Update(&taskFlag, &statusFlag, &updateFlag)
 }
