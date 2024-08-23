@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"log"
 
+	customlog "github.com/CodyBense/todo/cmd/customLog"
 	"github.com/charmbracelet/bubbles/list"
 )
 
-/* TODO: Move to app dir
-   made func (b Board)
-*/
-
 func SqlConnect() (*sql.DB, error) {
+    // Open log file and set it
+    customlog.Log()
+
     // Open Mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
@@ -22,6 +22,9 @@ func SqlConnect() (*sql.DB, error) {
 }
 
 func SqlAdd(task, description, table string) {
+    // Open log file and set it
+    customlog.Log()
+
     // Determines table
     var tableName string
     if table == "0" {
@@ -60,6 +63,9 @@ func SqlAdd(task, description, table string) {
 }
 
 func (b *Board) SqlListTodo() []list.Item{
+    // Open log file and set it
+    customlog.Log()
+
     // Open and test SQL connection
     db, err := SqlConnect()
 
@@ -98,6 +104,9 @@ func (b *Board) SqlListTodo() []list.Item{
 
 
 func (b *Board) SqlListInProgress() []list.Item{
+    // Open log file and set it
+    customlog.Log()
+
     // Open and test SQL connection
     db, err := SqlConnect()
 
@@ -136,6 +145,9 @@ func (b *Board) SqlListInProgress() []list.Item{
 
 
 func (b *Board) SqlListDone() []list.Item{
+    // Open log file and set it
+    customlog.Log()
+
     // Open and test SQL connection
     db, err := SqlConnect()
 
@@ -173,6 +185,9 @@ func (b *Board) SqlListDone() []list.Item{
 }
 
 func (b *Board) SqlRemove(table, task string) {
+    // Open log file and set it
+    customlog.Log()
+
     // Determines table
     var tableName string
     if table == "To Do" {
@@ -204,6 +219,8 @@ func (b *Board) SqlRemove(table, task string) {
 
 
 func SqlUpdate(currentTable, task, description string) {
+    // Open log file and set it
+    customlog.Log()
 
     var nextTable, tableName string
 

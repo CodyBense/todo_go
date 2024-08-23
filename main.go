@@ -1,6 +1,5 @@
 /*
 Copyright © 2024 Cody Bense <codybense@gmail.com>
-
 */
 package main
 

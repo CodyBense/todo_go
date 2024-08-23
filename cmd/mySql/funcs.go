@@ -5,10 +5,15 @@ import (
 	"log"
 
 	"database/sql"
+
+	customlog "github.com/CodyBense/todo/cmd/customLog"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func Connect() (*sql.DB, error) {
+    // Open log file and set it
+    customlog.Log()
+
     // Open Mysql connection
     db, err := sql.Open("mysql", "root:ZSe45rdx##@tcp(192.168.1.129:3306)/List")
     if err != nil {
@@ -25,6 +30,12 @@ func Connect() (*sql.DB, error) {
 }
 
 func Add( taskFlag, descriptionFlag, statusFlag *string) {
+    // Open log file and set it
+    customlog.Log()
+
+    // Open log file and set it
+    customlog.Log()
+
     // Open and test SQL connections
     db, err := Connect()
 
@@ -45,6 +56,9 @@ func Add( taskFlag, descriptionFlag, statusFlag *string) {
 }
 
 func List() {
+    // Open log file and set it
+    customlog.Log()
+
     // Open and Test SQL connection
     db, err := Connect()
 
@@ -132,6 +146,9 @@ func List() {
 }
 
 func Remove(taskFlag, statusFlag *string) {
+    // Open log file and set it
+    customlog.Log()
+
     // Open and Test SQL connection
     db, err := Connect()
 
@@ -152,6 +169,9 @@ func Remove(taskFlag, statusFlag *string) {
 }
 
 func Update(taskFlag, statusFlag, updateFlag *string) {
+    // Open log file and set it
+    customlog.Log()
+
     // Open and Test SQL connection
     db, err := Connect()
 
