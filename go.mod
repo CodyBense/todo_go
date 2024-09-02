@@ -7,7 +7,6 @@ require (
 	github.com/charmbracelet/bubbletea v0.26.6
 	github.com/charmbracelet/lipgloss v0.12.1
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.8.1
 )
 
